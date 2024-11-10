@@ -4,59 +4,60 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt(); // 항아리 수
-        int m = sc.nextInt(); // inseparable pair 수
-        int k = sc.nextInt(); // 지하에 배치할 항아리 수
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        int k = sc.nextInt();
 
-        // 그래프 초기화
-        List<Integer>[] graph = new ArrayList[n + 1];
-        for (int i = 1; i <= n; i++) {
+        List<Integer>[] graph = new List[n+1];
+
+        for(int i = 1 ; i <= n ; i++){
             graph[i] = new ArrayList<>();
         }
 
-        // inseparable pairs 입력
-        for (int i = 0; i < m; i++) {
-            int x = sc.nextInt();
-            int y = sc.nextInt();
-            graph[x].add(y);
-            graph[y].add(x);
+
+        for(int i = 0 ; i < m; i++){
+            int num1 = sc.nextInt();
+            int num2 = sc.nextInt();
+
+            graph[num1].add(num2);
+            graph[num2].add(num1);
         }
 
-        // 각 연결 요소의 크기를 저장할 리스트
-        List<Integer> componentSizes = new ArrayList<>();
-        boolean[] visited = new boolean[n + 1];
+        //독립적인 Pairs들의 수를 세기
+        boolean[] visited =new boolean[n+1];
+        List<Integer> sizes = new ArrayList<>();
 
-        // 연결 요소별로 크기를 계산
-        for (int i = 1; i <= n; i++) {
-            if (!visited[i]) {
-                int size = dfs(i, graph, visited);
-                componentSizes.add(size);
+        for(int i = 1 ; i<= n ;i++){
+
+            if(!visited[i]){
+                int size;
+                size = dfs(graph,visited,i,0);
+                sizes.add(size);
             }
         }
 
-        // Knapsack-like 문제로 해결: 각 요소 크기로 정확히 k를 만들 수 있는지 확인
-        boolean[] dp = new boolean[k + 1];
+        boolean[] dp = new boolean[n+1];
         dp[0] = true;
 
-        for (int size : componentSizes) {
-            for (int j = k; j >= size; j--) {
-                dp[j] = dp[j] || dp[j - size];
+        for(int i = 0 ; i < sizes.size(); i++){
+            for(int j = k ; j >= sizes.get(i) ;j--){
+                dp[j] = dp[j] || dp[j-sizes.get(i)];
             }
         }
-
         System.out.println(dp[k] ? "SAFE" : "DOOMED");
     }
 
-    // DFS를 통해 연결 요소의 크기를 계산
-    private static int dfs(int node, List<Integer>[] graph, boolean[] visited) {
-        visited[node] = true;
-        int size = 1;
 
-        for (int neighbor : graph[node]) {
-            if (!visited[neighbor]) {
-                size += dfs(neighbor, graph, visited);
+    public static int dfs(List<Integer>[] graph, boolean[] visited, int idx, int cnt) {
+        visited[idx] = true; // 현재 노드를 방문 표시
+        cnt++; // 현재 노드를 포함하여 개수를 증가
+
+        for (int a : graph[idx]) {
+            if (!visited[a]) {
+                cnt = dfs(graph, visited, a, cnt); // 반환된 cnt를 누적
             }
         }
-        return size;
+        return cnt; // 최종 누적된 cnt 반환
     }
+
 }
