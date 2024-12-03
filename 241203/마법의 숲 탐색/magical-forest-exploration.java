@@ -53,7 +53,12 @@ public class Main {
             return 0;
         }
         //방향 설정과 이동
-        return move(golemNum);
+        int answer = move(golemNum);
+        if(golems[golemNum].block[0][0] == 0) {
+            reset();
+            return 0;
+        }
+        return answer;
     }
 
 //방향 설정해서 이동하기
