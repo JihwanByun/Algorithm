@@ -17,7 +17,7 @@ public class Main {
 
         int k = sc.nextInt();
         int answer = 0;
-        golems = new Golem[1000];
+        golems = new Golem[1020];
 
         for(int i = 0 ; i < k; i++){
             int startC = sc.nextInt();
