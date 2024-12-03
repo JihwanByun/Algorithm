@@ -41,7 +41,7 @@ public class Main {
 
 
         int answer = move(golemNum);
-        if(golems[golemNum].block[0][0] <= 1) {
+        if(golems[golemNum].block[0][0] <= 2) {
             reset();
             return 0;
         }
