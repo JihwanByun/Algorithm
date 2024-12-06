@@ -9,8 +9,8 @@ public class Main {
         // 여기에 코드를 작성해주세요.
     Scanner sc =new Scanner(System.in);
 
-    int n = sc.nextInt();
-    int m = sc.nextInt();
+    int n = sc.nextInt(); //격자 크기
+    int m = sc.nextInt(); //굴리는 횟수
 
     int[][] grid = new int[n][n];
 
@@ -35,7 +35,7 @@ public class Main {
             dice.r += dr[dir];
             dice.c += dc[dir]; 
 
-            answer += score[dice.r][dice.c];
+            // answer += score[dice.r][dice.c];
             continue;
         }
 
@@ -179,7 +179,7 @@ class Dice{
     }
 
     public void moveRight(){
-        this.c = c+1;
+        this.c = this.c+1;
         int tmp = this.top;
         this.top = this.left;
         this.left = this.bottom;
@@ -202,7 +202,7 @@ class Dice{
         this.down = this.bottom;
         this.bottom = this.up;
         this.up = tmp;
-        this.r = r-1;
+        this.r = this.r-1;
     }
     public void moveDown(){
         int tmp = this.top;
@@ -210,7 +210,7 @@ class Dice{
         this.up = this.bottom;
         this.bottom = this.down;
         this.down = tmp;
-        this.r = r+1;
+        this.r = this.r+1;
     }
     
 
