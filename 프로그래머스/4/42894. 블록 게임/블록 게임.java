@@ -31,9 +31,9 @@ class Solution {
                             break;
                         }
                     }
-                    if(removed) break;
+                    // if(removed) break;
                 }
-                if(removed) break;
+                // if(removed) break;
             }
         } while(removed);
         
