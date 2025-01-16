@@ -1,74 +1,59 @@
 import java.util.*;
 
 public class Main {
-    public static String[] assignShortcuts(String[] options) {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        String[] options = new String[n];
         Set<Character> usedShortcuts = new HashSet<>();
-        String[] result = new String[options.length];
-        
-        for (int i = 0; i < options.length; i++) {
-            String option = options[i];
-            String[] words = option.split(" ");
-            boolean found = false;
-            int shortcutPos = -1;
-            
-            // 1단계: 각 단어의 첫 글자 확인
+        String[] result = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            options[i] = sc.nextLine();
+        }
+
+        for (int i = 0; i < n; i++) {
+            String[] words = options[i].split(" ");
+            boolean assigned = false;
+
+            // Step 1: Check first letters of each word
             for (int j = 0; j < words.length; j++) {
                 char firstChar = Character.toLowerCase(words[j].charAt(0));
                 if (!usedShortcuts.contains(firstChar)) {
                     usedShortcuts.add(firstChar);
-                    // 단축키 위치 계산
-                    shortcutPos = 0;
-                    for (int k = 0; k < j; k++) {
-                        shortcutPos += words[k].length() + 1; // +1은 공백 고려
-                    }
-                    found = true;
+                    words[j] = "[" + words[j].charAt(0) + "]" + words[j].substring(1);
+                    assigned = true;
                     break;
                 }
             }
-            
-            // 2단계: 모든 글자를 순서대로 확인
-            if (!found) {
-                String fullText = String.join(" ", words);
-                for (int j = 0; j < fullText.length(); j++) {
-                    char c = Character.toLowerCase(fullText.charAt(j));
-                    if (Character.isLetter(c) && !usedShortcuts.contains(c)) {
+
+            // Step 2: Check all characters in the option
+            if (!assigned) {
+                String fullOption = String.join(" ", words);
+                for (int j = 0; j < fullOption.length(); j++) {
+                    char c = Character.toLowerCase(fullOption.charAt(j));
+                    if (c != ' ' && !usedShortcuts.contains(c)) {
                         usedShortcuts.add(c);
-                        shortcutPos = j;
-                        found = true;
+                        fullOption = fullOption.substring(0, j) + "[" + fullOption.charAt(j) + "]" + fullOption.substring(j + 1);
+                        result[i] = fullOption;
+                        assigned = true;
                         break;
                     }
                 }
             }
-            
-            // 결과 문자열 생성
-            if (found) {
-                String fullText = String.join(" ", words);
-                result[i] = fullText.substring(0, shortcutPos) + 
-                           "[" + fullText.charAt(shortcutPos) + "]" + 
-                           fullText.substring(shortcutPos + 1);
-            } else {
+
+            // If no shortcut was assigned, keep the original option
+            if (!assigned) {
+                result[i] = String.join(" ", words);
+            } else if (result[i] == null) {
                 result[i] = String.join(" ", words);
             }
         }
-        
-        return result;
-    }
-    
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        sc.nextLine(); // 개행문자 처리
-        
-        String[] options = new String[N];
-        for (int i = 0; i < N; i++) {
-            options[i] = sc.nextLine();
-        }
-        
-        String[] result = assignShortcuts(options);
+
+        // Print the result
         for (String line : result) {
             System.out.println(line);
         }
-        
-        sc.close();
     }
 }
