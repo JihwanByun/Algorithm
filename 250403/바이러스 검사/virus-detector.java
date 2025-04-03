@@ -19,6 +19,7 @@ public class Main {
 
         for(int rest : rests) {
             if(rest <= maxInspectForLeader) {
+                if(rest == 0) continue;
                 answer++;
                 continue;
             }
