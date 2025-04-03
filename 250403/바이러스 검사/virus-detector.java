@@ -18,16 +18,14 @@ public class Main {
         int answer = 0;
 
         for(int rest : rests) {
-            if(rest <= maxInspectForLeader) {
-                if(rest == 0) continue;
-                answer++;
-                continue;
+            
+            int remain = rest - maxInspectForLeader;
+            answer++;
+
+            if (remain > 0) {
+                answer += (remain + maxInspectForFollower - 1) / maxInspectForFollower;
             }
-
-            int mod = rest - maxInspectForLeader;
-            int follower = mod % maxInspectForFollower > 0 ? mod / maxInspectForFollower + 1 : mod / maxInspectForFollower;
-
-            answer += follower + 1;
+            
         }
 
         System.out.println(answer);
