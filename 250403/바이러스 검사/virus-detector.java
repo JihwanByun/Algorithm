@@ -15,7 +15,7 @@ public class Main {
         int maxInspectForLeader = sc.nextInt();
         int maxInspectForFollower = sc.nextInt();
 
-        int answer = 0;
+        long answer = 0;
 
         for(int rest : rests) {
             
