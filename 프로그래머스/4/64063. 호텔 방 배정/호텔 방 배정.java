@@ -1,31 +1,28 @@
 import java.util.*;
 
 class Solution {
-    static Map<Long, Long> parent;
-
+    static Map<Long, Long> room = new HashMap<>();
+    
     public long[] solution(long k, long[] room_number) {
+        
         int n = room_number.length;
-        long[] result = new long[n];
-        parent = new HashMap<>();
-
-        for (int i = 0; i < n; i++) {
-            result[i] = find(room_number[i]);
+        long[] answer = new long[n];
+        int idx = 0;
+        for(long num : room_number) {
+            answer[idx++] = find(num);
         }
-
-        return result;
+        
+        return answer;
     }
-
-    // 경로 압축을 활용한 유니온 파인드
-    static long find(long room) {
-        if (!parent.containsKey(room)) {
-            // 이 방이 비어있으면 그대로 배정하고, 다음 방을 parent로 등록
-            parent.put(room, room + 1);
-            return room;
+    
+    static long find(long num) {
+        if(!room.containsKey(num)) {
+            room.put(num, num+1);
+            return num;
         }
-
-        // 이 방이 이미 배정되었으면, 다음 빈 방을 재귀적으로 찾기
-        long next = find(parent.get(room));
-        parent.put(room, next); // 경로 압축
-        return next;
+        
+        long nxt = find(room.get(num));
+        room.put(num, nxt);
+        return nxt;
     }
 }
